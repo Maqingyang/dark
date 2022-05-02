@@ -1,0 +1,163 @@
+.container {
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    min-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px 50px;
+    overflow: hidden;
+}
+
+.header1 {
+    color: white;
+    font-size: 4.5em
+}
+
+.inputLabel {
+    color: grey;
+    font-size: 2.2em;
+    font-weight: bold;
+}
+
+.formDiv {
+    background: #323331;
+    padding: 20px 25px 30px 25px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.inputDivSecondLine {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    height: 100px;
+}
+
+.inputDiv {
+    margin-top: 10px;
+    background: black;
+    color: grey;
+    height: 80px;
+    width: 400px;
+    border: grey;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 1.3em;
+    width: 820px;
+    margin-right: 20px;
+}
+
+.inputDiv:focus {
+    outline: 2px solid white;
+}
+
+.submitButton {
+    display: flex;
+    height: fit-content;
+    font-size: 20px;
+    position: relative;
+    top: 55px;
+    background: #2E54FF;
+    color: white;
+    font-weight: bold;
+    padding: 8px 10px;
+    border: 0;
+    border-radius: 6px;
+    align-items: center;
+}
+
+.submitButton:hover {
+    background: #2e54ffcd;
+}
+
+.submitButton:active {
+    outline: 5px solid #4b4f60 !important;
+}
+
+.userId {
+    margin-top: 15px;
+    color: #2E54FF;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.allpostContainer {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.postContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-top: 1px solid rgb(95, 95, 95);
+    font-size: 1.2em;
+    padding-left: 20px;
+    /* padding-right: 20px; */
+    padding-top: 15px;
+    overflow: hidden;
+}
+
+.id {
+    display: flex;
+    flex-direction: row;
+    color: #2E54FF;
+    font-weight: bold;
+    justify-content: space-between;
+    padding-right: 10px;
+}
+
+.postcontent {
+    color: rgb(208, 208, 208);
+    margin-left: 24px;
+    font-size: 1.3em;
+    width: calc(100%-20px);
+    word-wrap: break-word;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+
+.addCommentClick {
+    color: #2E54FF;
+    position: relative;
+    align-self: flex-end;
+    margin-right: 20px;
+}
+
+.addCommentClick:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.commentContainer {
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.comment {
+    margin-top: 5px;
+    width: calc(100%-200px);
+    color: rgb(208, 208, 208);
+    padding-left: 20px;
+    word-wrap: break-word;
+}
+
+.commentDiv {
+    border-top: 1px solid rgb(95, 95, 95);
+    padding: 10px;
+}
+
+.commentFormDiv {
+    background: #323331;
+    padding: 20px 25px 30px 25px;
+    border-radius: 10px;
+    width: 100%;
+    margin-left: 30px;
+}
