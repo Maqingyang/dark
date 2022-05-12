@@ -39,7 +39,7 @@ class App extends Component {
     try {
       const abi = require("./abi.json");
       const McpFunc = new Mcp();
-      McpFunc.Contract.setProvider("http://18.182.45.18:8765");
+      McpFunc.Contract.setProvider("http://13.212.177.203:8765") //http://18.182.45.18:8765");
       const tokenAddress = "0xa9DDe3026edE84b767205492Eef2944E1FC3a0B8";
       const instance = new McpFunc.Contract(
           abi,
