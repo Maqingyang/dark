@@ -27,7 +27,7 @@ class App extends Component {
     event.preventDefault();
     const { contract, newpost, accounts, allposts } = this.state;
     if (newpost != '') {
-      await contract.methods.createNewPost(newpost).send({ from: accounts[0] });
+      await contract.methods.createNewPost(newpost).sendToBlock({ from: accounts[0], amount: "0" });
       this.setState({ newpost: '' });
       this.updatePost();
     } else {
@@ -37,27 +37,26 @@ class App extends Component {
 
   componentDidMount = async () => {
     try {
-      if (typeof window["aleereum"] == "undefined") {
-        alert("Please install Ale Wallet Chrome Extension!")
-      }
-      const provider = window["aleereum"]
-      await  window["aleereum"].connect()
-
       const abi = require("./abi.json");
       const McpFunc = new Mcp();
       McpFunc.Contract.setProvider("http://18.182.45.18:8765");
-      
       const tokenAddress = "0xa9DDe3026edE84b767205492Eef2944E1FC3a0B8";
-      const coreAddress = "0xa9DDe3026edE84b767205492Eef2944E1FC3a0B8";
-      
       const instance = new McpFunc.Contract(
           abi,
           tokenAddress
       );
-      
+
+      if (typeof window["aleereum"] == "undefined") {
+        alert("Please install Ale Wallet Chrome Extension!")
+      }
+
+      const provider = window["aleereum"]
+      console.log(provider)
+      await window["aleereum"].connect()
+
       const accounts = [provider.account,]
       this.setState({ provider, accounts, contract: instance }, this.updatePost);
-
+ 
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -89,7 +88,8 @@ class App extends Component {
   updatePost = async () => {
     const { contract } = this.state;
     const numPosts = await contract.methods.numOfPosts().call();
-    this.setState({ numOfPost: numPosts })
+    console.log("numofPosts", numPosts);
+    this.setState({ numOfPost: numPosts });
     let allPosts = {};
     let tmppost = {};
     for (let i = numPosts - 1; i > -1; i--) {
@@ -118,7 +118,7 @@ class App extends Component {
     console.log(postID);
     const { contract, accounts, newComments, addComments } = this.state;
     if (newComments[postID] != '') {
-      await contract.methods.createNewComment(postID, newComments[postID]).send({ from: accounts[0] });
+      await contract.methods.createNewComment(postID, newComments[postID]).sendToBlock({ from: accounts[0], amount: "0" });
       this.updatePost();
       addComments[postID] = false;
       newComments[postID] = '';
