@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});var crypto_1=require("crypto");var bytes_1=require("./bytes");function bufferify(r){return Buffer.from(bytes_1.arrayify(r))}function pbkdf2(r,e,f,t,y){return bytes_1.arrayify(crypto_1.pbkdf2Sync(bufferify(r),bufferify(e),f,t,y))}exports.pbkdf2=pbkdf2;

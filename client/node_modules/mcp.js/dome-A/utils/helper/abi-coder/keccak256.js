@@ -1,0 +1,1 @@
+"use strict";const sha3=require("js-sha3");const convert=require("./convert.js");function keccak256(e){e=convert.arrayify(e);return"0x"+sha3.keccak_256(e)}module.exports=keccak256;

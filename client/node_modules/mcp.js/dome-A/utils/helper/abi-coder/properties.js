@@ -1,0 +1,1 @@
+"use strict";function defineProperty(e,r,n){Object.defineProperty(e,r,{enumerable:true,value:n,writable:false})}function defineFrozen(e,r,n){const t=JSON.stringify(n);Object.defineProperty(e,r,{enumerable:true,get:function(){return JSON.parse(t)}})}module.exports={defineFrozen:defineFrozen,defineProperty:defineProperty};

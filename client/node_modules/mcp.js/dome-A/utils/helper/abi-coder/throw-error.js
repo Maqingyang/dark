@@ -1,0 +1,1 @@
+"use strict";function throwError(r,o){const t=new Error(r);for(const n in o){t[n]=o[n]}throw t}module.exports=throwError;
