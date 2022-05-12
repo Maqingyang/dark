@@ -3,9 +3,12 @@ import getWeb3 from "./getWeb3";
 import "./App.css";
 import DarkContract from "./contracts/Dark.json";
 import styles from './styles/main.module.css'
+import Mcp from "./mcp";
+
+
 
 class App extends Component {
-  state = { allposts: {}, web3: null, accounts: null, contract: null, newpost: '', numOfPost: 0, addComments: {}, newComments: {} };
+  state = { allposts: {}, web3: null, provider: null, accounts: null, contract: null, newpost: '', numOfPost: 0, addComments: {}, newComments: {} };
 
   constructor(props) {
     super(props);
@@ -34,30 +37,26 @@ class App extends Component {
 
   componentDidMount = async () => {
     try {
-      // Get network provider and web3 instance.
-      const web3 = await getWeb3();
-
-      // Use web3 to get the user's accounts.
-      const accounts = await web3.eth.getAccounts();
-      // Get the contract instance.
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = DarkContract.networks[networkId];
-      const instance = new web3.eth.Contract(
-        DarkContract.abi,
-        deployedNetwork && deployedNetwork.address,
-      );
-      instance.options.address = "";// Fill the contract address
-
-      // Set web3, accounts, and contract to the state, and then proceed with an
-      // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.updatePost);
-
-      const { addComments } = this.state;
-
-      for (let i = this.state.numOfPost - 1; i > -1; i--) {
-        addComments[i] = false;
+      if (typeof window["aleereum"] == "undefined") {
+        alert("Please install Ale Wallet Chrome Extension!")
       }
-      this.setState({ addComments: addComments })
+      const provider = window["aleereum"]
+      await  window["aleereum"].connect()
+
+      const abi = require("./abi.json");
+      const McpFunc = new Mcp();
+      McpFunc.Contract.setProvider("http://18.182.45.18:8765");
+      
+      const tokenAddress = "0xa9DDe3026edE84b767205492Eef2944E1FC3a0B8";
+      const coreAddress = "0xa9DDe3026edE84b767205492Eef2944E1FC3a0B8";
+      
+      const instance = new McpFunc.Contract(
+          abi,
+          tokenAddress
+      );
+      
+      const accounts = [provider.account,]
+      this.setState({ provider, accounts, contract: instance }, this.updatePost);
 
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -135,25 +134,8 @@ class App extends Component {
     this.setState({ newComments: newComments })
   }
 
-  // render() {
-  //   if (!this.state.web3) {
-  //     return <div>Loading Web3, accounts, and contract...</div>;
-  //   }
-  //   return (
-  //     <>
-  //       <Router>
-  //         <Routes>
-  //           <Route exact path='/' element={<MainPage />} />
-  //           <Route exact path='/posts/new' element={<NewPostPage />} />
-  //           <Route exact path='/posts/:postid' element={<PostDetailPage />} />
-  //           <Route exact path='/posts' element={<PostPage />} />
-  //         </Routes>
-  //       </Router>
-  //     </>
-  //   );
-  // }
   render() {
-    if (!this.state.web3) {
+    if (!this.state.provider || !this.state.provider.isConnected) {
       return <div className={styles.container}>
         <div>Loading Web3, accounts, and contract...</div>
       </div >
