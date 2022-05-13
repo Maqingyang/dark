@@ -3,13 +3,12 @@ import getWeb3 from "./getWeb3";
 import "./App.css";
 import DarkContract from "./contracts/Dark.json";
 import styles from './styles/main.module.css'
+import Mcp from "./mcp";
+
 import 'antd/dist/antd.min.css';
 import {SmileTwoTone} from '@ant-design/icons';
 import {Layout, Space, Typography, Card, Col, Row, Input, Button, Divider, Tabs, Image} from "antd";
 
-
-
-//coments
 import { Comment, Tooltip, Avatar } from 'antd';
 import moment from 'moment';
 import { UserOutlined,DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
@@ -28,9 +27,8 @@ function callback(key) {
 
 
 
-
 class App extends Component {
-  state = { allposts: {}, web3: null, accounts: null, contract: null, newpost: '', numOfPost: 0, addComments: {}, newComments: {} };
+  state = { allposts: {}, web3: null, provider: null, accounts: null, contract: null, newpost: '', numOfPost: 0, addComments: {}, newComments: {} };
 
   constructor(props) {
     super(props);
@@ -41,11 +39,6 @@ class App extends Component {
     this.getAllCommentsByPost = this.getAllCommentsByPost.bind(this);
   }
 
-
-
-
-
-
   handleChange(event) {
     this.setState({ newpost: event.target.value })
   }
@@ -54,7 +47,7 @@ class App extends Component {
     event.preventDefault();
     const { contract, newpost, accounts, allposts } = this.state;
     if (newpost != '') {
-      await contract.methods.createNewPost(newpost).send({ from: accounts[0] });
+      await contract.methods.createNewPost(newpost).sendToBlock({ from: accounts[0], amount: "0" });
       this.setState({ newpost: '' });
       this.updatePost();
     } else {
@@ -64,31 +57,26 @@ class App extends Component {
 
   componentDidMount = async () => {
     try {
-      // Get network provider and web3 instance.
-      const web3 = await getWeb3();
-
-      // Use web3 to get the user's accounts.
-      const accounts = await web3.eth.getAccounts();
-      // Get the contract instance.
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = DarkContract.networks[networkId];
-      const instance = new web3.eth.Contract(
-        DarkContract.abi,
-        deployedNetwork && deployedNetwork.address,
+      const abi = require("./abi.json");
+      const McpFunc = new Mcp();
+      McpFunc.Contract.setProvider("http://18.182.45.18:8765");
+      const tokenAddress = "0xa9DDe3026edE84b767205492Eef2944E1FC3a0B8";
+      const instance = new McpFunc.Contract(
+          abi,
+          tokenAddress
       );
-      instance.options.address = "0xE0bd0D06aB44059Bea8a058c251F63160faf2110";// Fill the contract address
 
-      // Set web3, accounts, and contract to the state, and then proceed with an
-      // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.updatePost);
-
-      const { addComments } = this.state;
-
-      for (let i = this.state.numOfPost - 1; i > -1; i--) {
-        addComments[i] = false;
+      if (typeof window["aleereum"] == "undefined") {
+        alert("Please install Ale Wallet Chrome Extension!")
       }
-      this.setState({ addComments: addComments })
 
+      const provider = window["aleereum"]
+      console.log(provider)
+      await window["aleereum"].connect()
+
+      const accounts = [provider.account,]
+      this.setState({ provider, accounts, contract: instance }, this.updatePost);
+ 
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -120,7 +108,8 @@ class App extends Component {
   updatePost = async () => {
     const { contract } = this.state;
     const numPosts = await contract.methods.numOfPosts().call();
-    this.setState({ numOfPost: numPosts })
+    console.log("numofPosts", numPosts);
+    this.setState({ numOfPost: numPosts });
     let allPosts = {};
     let tmppost = {};
     for (let i = numPosts - 1; i > -1; i--) {
@@ -149,7 +138,7 @@ class App extends Component {
     console.log(postID);
     const { contract, accounts, newComments, addComments } = this.state;
     if (newComments[postID] != '') {
-      await contract.methods.createNewComment(postID, newComments[postID]).send({ from: accounts[0] });
+      await contract.methods.createNewComment(postID, newComments[postID]).sendToBlock({ from: accounts[0], amount: "0" });
       this.updatePost();
       addComments[postID] = false;
       newComments[postID] = '';
@@ -163,53 +152,28 @@ class App extends Component {
     const { newComments } = this.state;
     newComments[postID] = event.target.value;
     this.setState({ newComments: newComments })
-  };
+  }
 
-
-  
- 
-
-  // render() {
-  //   if (!this.state.web3) {
-  //     return <div>Loading Web3, accounts, and contract...</div>;
-  //   }
-  //   return (
-  //     <>
-  //       <Router>
-  //         <Routes>
-  //           <Route exact path='/' element={<MainPage />} />
-  //           <Route exact path='/posts/new' element={<NewPostPage />} />
-  //           <Route exact path='/posts/:postid' element={<PostDetailPage />} />
-  //           <Route exact path='/posts' element={<PostPage />} />
-  //         </Routes>
-  //       </Router>
-  //     </>
-  //   );
-  // }
   render() {
-    if (!this.state.web3) {
+    if (!this.state.provider || !this.state.provider.isConnected) {
       return <div className={styles.container}>
         <div>Loading Web3, accounts, and contract...</div>
       </div >
     }
     return (
       <>
- 
-          <Layout>
+        <Layout>
             <Header style={{
             position: 'fixed',
             zIndex: 1,
             width: '100%',
-            backgroundColor: '#4682b4'
+            backgroundColor: '#1e1e21'
             
           }} >
-            <Space>
-            <SmileTwoTone />
-            </Space>
-            <div className = {styles.header1}>
-              <Title italic strong level={1} color="white">
-                <p style={{color:'White'}} > DARK</p>
-             </Title>
+          <div>
+            <a href="#">
+              <img id="logo" src='logo.jpg' width="50" height="60"></img>
+            </a>
           </div>
 
           </Header>
@@ -220,21 +184,13 @@ class App extends Component {
 
           <div className="site-card-wrapper" style = {{marginTop: 64}}>
             <Row gutter={16}>
-              <Col span={8}>
-                <Card title="Decentrolized" bordered={false}>
-                  Card content
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card title="Ale wallet" bordered={false}>
-                  Card content
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card title="Ethereum" bordered={false}>
-                  Card content
-                </Card>
-              </Col>
+            <div>
+            <a href="#">
+              <img id="logo" src='https://ibb.co/mt0b1nt' width="50" height="60"></img>
+            </a>
+          </div>
+            
+            
             </Row>
           </div>
 
@@ -371,9 +327,6 @@ class App extends Component {
 
 
               )
-
-
-
 
 
               

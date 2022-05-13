@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^4.20.2",
-    "chokidar": "^3.5.3",
+    "@ant-design/compatible": "^1.1.0",
+    "antd": "^4.20.4",
+    "mcp.js": "^0.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.3.0",
