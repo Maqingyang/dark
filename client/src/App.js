@@ -46,7 +46,7 @@ class App extends Component {
           tokenAddress
       );
 
-      if (typeof window["aleereum"] == "undefined") {
+      while (typeof window["aleereum"] == "undefined") {
         alert("Please install Ale Wallet Chrome Extension!")
       }
 
