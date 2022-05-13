@@ -11,7 +11,8 @@
 
 .header1 {
     color: white;
-    font-size: 4.5em
+    font-size: 4.5em;
+    margin-top:50px;
 }
 
 .inputLabel {
@@ -20,9 +21,16 @@
     font-weight: bold;
 }
 
+.idAndAva {
+    display:flex;
+    width:50%;
+    flex-direction: row;
+    align-items: center;
+}
+
 .formDiv {
     background: #323331;
-    padding: 20px 25px 30px 25px;
+    padding: 20px 25px 20px 25px;
     border-radius: 10px;
     width: 100%;
 }
@@ -59,7 +67,7 @@
     height: fit-content;
     font-size: 20px;
     position: relative;
-    top: 55px;
+    top: 33px;
     background: #2E54FF;
     color: white;
     font-weight: bold;
@@ -111,6 +119,7 @@
     font-weight: bold;
     justify-content: space-between;
     padding-right: 10px;
+    align-items: center;
 }
 
 .postcontent {
@@ -119,7 +128,7 @@
     font-size: 1.3em;
     width: calc(100%-20px);
     word-wrap: break-word;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-bottom: 5px;
     margin-right: 10px;
 }
@@ -139,6 +148,7 @@
 .commentContainer {
     margin-left: 30px;
     margin-top: 20px;
+    width: 100%;
 }
 
 .comment {
@@ -152,12 +162,39 @@
 .commentDiv {
     border-top: 1px solid rgb(95, 95, 95);
     padding: 10px;
+    padding-right: 40px;
 }
 
 .commentFormDiv {
+    display:block;
     background: #323331;
-    padding: 20px 25px 30px 25px;
+    padding: 16px 20px 16px 20px;
     border-radius: 10px;
-    width: 100%;
     margin-left: 30px;
+    width: 600px;
+}
+
+.addCommentInputDiv{
+    padding-right: 60px;
+    width: 600px;
+}
+
+.inputDiv2 {
+    margin-top: 10px;
+    background: black;
+    color: grey;
+    height: 80px;
+    border: grey;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 18px;
+    width: 500px;
+    margin-right: 20px;
+}
+.inputDivSecondLine2 {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    height: 100px;
 }

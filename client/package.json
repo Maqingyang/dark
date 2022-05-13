@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ant-design": "^1.0.0",
+    "antd": "^4.20.4",
     "mcp.js": "^0.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -30,5 +32,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0"
   }
 }
